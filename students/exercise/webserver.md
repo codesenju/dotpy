@@ -14,13 +14,12 @@ tailscale up --login-server=https://headscale.jazziro.com --authkey=KEY --accept
 
 ### Go to <http://192.168.1.11:8080> login with student user
 
-username: student
-
+username: student<br>
 password: student
 
 ![login_form](../../images/login_form.png)
 
-- Once logged in, from the left navigation menu go to Compute -> Instances, and click on **Add Instance**
+- Once logged in, from the left navigation menu go to ***Compute -> Instances***, and click on **Add Instance**
 
 ![add_instance](../../images/add_instance.png)
 
@@ -46,7 +45,7 @@ password: student
 
 - mynet
 
-#### 6.SSH key pairs (Skip)
+#### 6. SSH key pairs (Skip)
 
 #### 7. Advanced mode (Skip)
 
@@ -57,7 +56,7 @@ password: student
 
 ![details](../../images/step_8_details.png)
 
-### Before proceeding to the next steps make sure your vm settings match with the following
+### Before proceeding to the next steps make sure your vm settings match with the following:
 
 ![vm_settings](../../images/vm_settings.png)
 
@@ -71,11 +70,18 @@ password: student
 ![vm_running](../../images/vm_running.png)
 ![open_view_console](../../images/open_view_console.png)
 
-### Login to your vm using the following credentials
+### Login to your vm using the following credentials:
 
 - username: cloud
 - password: cloud
 
+#### Run the bellow command to confirm your vm has internet acces:
+```bash
+ping google.com -c 2
+```
+You should result with `0% packet loss`:
+![ping_google](../../images/ping_google.png)
+If you are getting the same results as above, you're good move on to the next steps!
 # Setup Networking
 
 ### From the left navigation menu, go to Network -> Guest Networks
@@ -134,7 +140,9 @@ If asked `Are you sure you want to continue connecting`, type *yes* and press *E
 ![ssh](../../images/ssh.png)
 
 # Setup the Webserver
+Copy and paste bellow in your terminal:
 
+*You will be asked to enter your name, please do so and press enter*.
 ```bash
 read -p "Enter your name: " name && \
 sudo apt update && \
@@ -145,15 +153,19 @@ sudo systemctl enable apache2 && \
 echo -e 'Setup Complete!\nNext step is to test by running the following command: "curl localhost"'
 ```
 
-### Test
+# Test
 
 ```bash
 curl localhost
 ```
 Open your browser and enter `your public ip`.
 
+![webserver](../../images/webserver.png)
+
+Final steps take proof and send to your instructor:
+- take a screenshot of the browser
+
 ### Cleanup
 
-```bash
-sudo systemctl stop apache2 && sudo systemctl disable apache2 && sudo apt purge apache2* -y && sudo apt autoremove -y && sudo rm -rf /var/www/html/* && echo "Apache and all web content have been removed."
-```
+- Make sure to clean up after yourself:
+  - Remove your vm and delete the public ip.
