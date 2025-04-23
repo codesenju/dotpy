@@ -31,6 +31,27 @@ sudo cat /home/cloud/.ssh/id_rsa.pub | sudo tee -a /root/.ssh/authorized_keys
 ```
 
 ### User data:
-```
+```bash
+#cloud-config username: cloud password: cloud
+users:
+  - name: cloud
+    passwd: "$6$somesalt$KLY2ZQYLjdx4lBtCH.VTkiEF4xqrFa3IkhmIiNiwxjEi1N/TWcKSO8LiXTFSBlIfKjJkGtg8mNw3ZB3DYjRvj."
+    lock_passwd: false
+    sudo: ALL=(ALL) NOPASSWD:ALL  # Optional: Grants passwordless sudo
+    shell: /bin/bash  # Sets bash as the default shell
 
+# Ensure password doesn't expire
+chpasswd:
+  expire: false
+
+# Enable password authentication for SSH
+ssh_pwauth: true
+
+# Optional: Update SSH configuration to allow password auth
+write_files:
+  - path: /etc/ssh/sshd_config.d/60-cloud-init.conf
+    content: |
+      PasswordAuthentication yes
+      ChallengeResponseAuthentication no
+      UsePAM yes
 ```

@@ -1,14 +1,140 @@
-### Go to http://192.168.1.11:8080 login with student user
+# Prerequisites
+
+## Download and install tailscale client
+
+- https://tailscale.com/download
+
+### Setup tailscale client
+-  Replace KEY with the key you got from your instructor.
+```powershell
+tailscale up --login-server=https://headscale.jazziro.com --authkey=KEY --accept-dns=false --accept-routes
+```
+
+# Launching VM
+
+### Go to <http://192.168.1.11:8080> login with student user
 
 username: student
 
 password: student
 
-[login_form](../../images/login_form.png)
+![login_form](../../images/login_form.png)
 
-- Once logged in on the left pane menu go to Compute -> Instances, and click on **Add Instance**
+- Once logged in, from the left navigation menu go to Compute -> Instances, and click on **Add Instance**
 
-### Setup Webserver
+![add_instance](../../images/add_instance.png)
+
+## Add the following configurations for your vm
+
+#### 1. Select deployment infrastructure (Leave as is)
+
+- zone1
+
+#### 2. Template/ISO
+
+- Ubuntu Server 24.04 LTS (Noble Numbat)
+
+#### 3. Compute offering
+
+- Small Instance
+
+#### 4. Data disk
+
+- No thanks
+
+#### 5. Networks (Leave as is)
+
+- mynet
+
+#### 6.SSH key pairs (Skip)
+
+#### 7. Advanced mode (Skip)
+
+#### 8. Details
+
+- Please fill in your name in the **Name** field.
+- Please select **Standard (US) keyboard** from the keyboard language drop down list.
+
+![details](../../images/step_8_details.png)
+
+### Before proceeding to the next steps make sure your vm settings match with the following
+
+![vm_settings](../../images/vm_settings.png)
+
+### Click **Launch Instance**
+
+![launch_instance](../../images/launch_instance.png)
+
+### Once your instance is running open the *view console*
+
+![vm_starting](../../images/vm_starting.png)
+![vm_running](../../images/vm_running.png)
+![open_view_console](../../images/open_view_console.png)
+
+### Login to your vm using the following credentials
+
+- username: cloud
+- password: cloud
+
+# Setup Networking
+
+### From the left navigation menu, go to Network -> Guest Networks
+
+### Open mynet, select the *Public IP addresses* panel, and click on *Acquire new IP*
+
+![new_ip](../../images/new_ip.png)
+
+### Pick the next available IP and write down the ip number, this will be used in the next steps
+
+![ip_list](../../images/new_ip_list.png)
+
+### Click the ip you selected in the previous step
+
+![click_ip](../../images/click_ip.png)
+
+## Configure your *Firewall* and *Port forwarding* to match the followng
+
+## Port forwarding
+
+- Add port 22 on all fields and click on the Add Instance button *Add*.
+
+![add_instance](../../images/pf_add_instance.png)
+
+- Make sure to select the instance you created earlier that has your name.
+
+![select_instance](../../images/pf_select_instance.png)
+
+### Repeat the two previous steps but for port 80
+
+![port_forwarding_final](../../images/port_forwarding_final.png)
+
+## Firewall
+
+- protocol = TCP
+- start port = 22
+- end port = 22
+- click add
+
+![firewall_22](../../images/firewall_22.png)
+
+...and again for port 80
+
+![firewall_80](../../images/firewall_80.png)
+
+## SSH
+
+Open windows powershell and ssh into your vm using `your own public ip`. Enter the following command:
+
+!! DO NOT FORGET TO REPLACE 192.168.1.23 WITH YOUR OWN PUBLIC IP !!
+```powershell
+ssh cloud@192.168.1.23
+```
+If asked `Are you sure you want to continue connecting`, type *yes* and press *Enter*
+
+![ssh](../../images/ssh.png)
+
+# Setup the Webserver
+
 ```bash
 read -p "Enter your name: " name && \
 sudo apt update && \
@@ -18,11 +144,16 @@ sudo systemctl start apache2 && \
 sudo systemctl enable apache2 && \
 echo -e 'Setup Complete!\nNext step is to test by running the following command: "curl localhost"'
 ```
+
 ### Test
+
 ```bash
 curl localhost
 ```
+Open your browser and enter `your public ip`.
+
 ### Cleanup
+
 ```bash
 sudo systemctl stop apache2 && sudo systemctl disable apache2 && sudo apt purge apache2* -y && sudo apt autoremove -y && sudo rm -rf /var/www/html/* && echo "Apache and all web content have been removed."
 ```
