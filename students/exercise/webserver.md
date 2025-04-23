@@ -1,4 +1,6 @@
-# Prerequisites
+# Cloud Course
+
+## Prerequisites
 
 ## Download and install tailscale client
 
@@ -10,7 +12,7 @@
 tailscale up --login-server=https://headscale.jazziro.com --authkey=KEY --accept-dns=false --accept-routes
 ```
 
-# Launching VM
+# 1. Launching a VM
 
 ### Go to <http://192.168.1.11:8080> login with student user
 
@@ -82,7 +84,7 @@ ping google.com -c 2
 You should result with `0% packet loss`:
 ![ping_google](../../images/ping_google.png)
 If you are getting the same results as above, you're good move on to the next steps!
-# Setup Networking
+# 2. Setup Networking
 
 ### From the left navigation menu, go to Network -> Guest Networks
 
@@ -139,7 +141,7 @@ If asked `Are you sure you want to continue connecting`, type *yes* and press *E
 
 ![ssh](../../images/ssh.png)
 
-# Setup the Webserver
+# 3. Setup the Webserver
 Copy and paste bellow in your terminal:
 
 *You will be asked to enter your name, please do so and press enter*.
@@ -153,7 +155,7 @@ sudo systemctl enable apache2 && \
 echo -e 'Setup Complete!\nNext step is to test by running the following command: "curl localhost"'
 ```
 
-# Test
+# 4. Test
 
 ```bash
 curl localhost
